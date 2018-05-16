@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Tidy YouTube",
+  "description": "Turns off the distracting youtube related section. Prevents you from evtering the \"Click, Watch, Click, Watch\" void.",
+  "version": "1.0.0",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": ["jquery-3.3.1.min.js", "content.js"],
+      "css": ["hider.css"]
+    }
+  ],
+  "web_accessible_resources": ["logo-gray-02.png","logo-green-02.png"],
+  "browser_action": {
+    "default_icon": "logo-green-02.png"
+  }
+}
