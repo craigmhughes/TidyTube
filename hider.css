@@ -1,5 +1,5 @@
 
-.alert-box {
+.tt-alert-box {
     display: block!important;
     color: #f2f2f2;
     background: #222;
@@ -18,5 +18,19 @@
 
 #contents.ytd-section-list-renderer > *.ytd-section-list-renderer:not(:last-child):not(ytd-page-introduction-renderer) {
     border-bottom: none!important;
+}
+
+.tt-title-alert {
+    margin: 30px 0;
+}
+
+.tt-title-alert > p {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.tt-title-alert > img {
+    position: relative;
+    top: 7px;
 }
 

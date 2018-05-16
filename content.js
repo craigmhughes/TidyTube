@@ -18,19 +18,23 @@ $(document).ready(function () {
 
     $('div#end').prepend("<img class='tt-toggle' title='Toggle TidyTube'/>");
 
-    $('.tt-toggle').attr("src", localStorage.getItem("TidyTubeEnabled") === "true" ? logoUrl : logoUrl2);
+    if(localStorage.getItem("TidyTubeEnabled") === "true"){
+        $('.tt-toggle').attr("src", logoUrl);
+        $('#primary').prepend("<div class='tt-alert-box tt-title-alert'><img id='tt-logo' height='30px' width='auto'/><p>TidyTube is currently blocking possible distracting content.</p></div>");
+        $('#tt-logo').attr("src", logoUrl);
+    } else {
+        $('.tt-toggle').attr("src", logoUrl2);
+    }
+
     testURL(window.location.href);
 
     $('.tt-toggle').click(function () {
         storageChange();
         location.reload();
     });
-
-    mainPageEdit();
 });
 
 function testURL(winUrl) {
-    //console.log(localStorage);
     if(localStorage.getItem("TidyTubeEnabled") === "true"){
         let url = window.location.href;
         let patt = new RegExp("list");
@@ -38,7 +42,7 @@ function testURL(winUrl) {
         // Check if url is that of a mix.
         if(patt.test(url)) {
             $("#columns").css("display","flex");
-            $('#related').html('<div class="alert-box"><p>Distracting Content Disabled</p></div>');
+            $('#related').html('<div class="tt-alert-box"><p>Distracting Content Disabled</p></div>');
             $('#related').show();
         } else {
             $("#columns").css("display","block");
@@ -78,9 +82,7 @@ window.onpopstate = function(){
     mainPageEdit();
 };
 
-$(window).scroll(function() {mainPageEdit()});
-$(window).hover(function() {mainPageEdit()});
-
+// Switch Toggle States
 function storageChange() {
     switch (localStorage.getItem("TidyTubeEnabled")) {
         case("true") :
@@ -125,6 +127,7 @@ function mainPageEdit(){
     }
 }
 
+// Check and possibly delete elements containing passed string.
 function titleScrub(pattPass){
     let patt = new RegExp(pattPass);
 
@@ -134,3 +137,6 @@ function titleScrub(pattPass){
         }
     });
 }
+
+
+setInterval(mainPageEdit, 100);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Tidy YouTube",
-  "description": "Turns off the distracting youtube related section. Prevents you from evtering the \"Click, Watch, Click, Watch\" void.",
+  "name": "TidyTube",
+  "description": "Turns off the distracting YouTube related section. Prevents you from entering the \"Click, Watch, Click, Watch\" void.",
   "version": "1.0.0",
   "content_scripts": [
     {
@@ -16,7 +16,9 @@
   "browser_action": {
     "default_icon": "logo-green-02.png"
   },
-  "icons": { "16": "icon16.png",
+  "icons": {
+    "16": "icon16.png",
     "48": "icon48.png",
-    "128": "icon128.png" }
+    "128": "icon128.png"
+  }
 }
