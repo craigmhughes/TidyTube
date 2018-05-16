@@ -70,7 +70,6 @@ function testURL(winUrl) {
 // YouTube doesn't refresh when links are clicked. Test url every time user clicks on page instead.
 $('body').click(function(){
     testURL(window.location.href);
-    mainPageEdit();
 });
 
 // Used for if user presses go back in history or forward.
@@ -80,6 +79,7 @@ window.onpopstate = function(){
 };
 
 $(window).scroll(function() {mainPageEdit()});
+$(window).hover(function() {mainPageEdit()});
 
 function storageChange() {
     switch (localStorage.getItem("TidyTubeEnabled")) {
@@ -111,15 +111,26 @@ function mainPageEdit(){
                 $(this).parents(':eq(4)').hide();
             }
 
-            console.log(this.innerText.toLowerCase());
-
             let strArr = ["music","sports","gaming","movies"];
-            for(let i = 0; i < patt.length; i++){
-                if(this.innerText.toLowerCase() === strArr[i]){
+            for(let i = 0; i < strArr.length; i++){
+                if(this.innerText.toLowerCase() === "by " + strArr[i]){
                     $(this).parents(':eq(4)').hide();
                 }
             }
         });
 
+        titleScrub("trending");
+        titleScrub("live gaming for you");
+        titleScrub("live recommendations");
     }
+}
+
+function titleScrub(pattPass){
+    let patt = new RegExp(pattPass);
+
+    $('span#title').each(function(){
+        if(patt.test(this.innerText.toLowerCase())){
+            $(this).parents(':eq(5)').hide();
+        }
+    });
 }
