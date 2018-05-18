@@ -170,12 +170,6 @@ function mainPageEdit(){
         if(window.location.href.length <= 24) {
             let patt = new RegExp("recommended");
 
-            // if ($('#primary:first-of-type > div#contents > ytd-item-section-renderer').css('display') != 'none') {
-            //     $('#primary:first-of-type > div#contents > ytd-item-section-renderer').hide();
-            // }
-
-
-
             // Hide the parent of any element that includes the word "Recommended" and Ads by YouTube.
             $("yt-formatted-string#title-annotation").each(function () {
                 if (patt.test(this.innerText.toLowerCase())) {
