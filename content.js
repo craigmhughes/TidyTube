@@ -69,9 +69,6 @@ function testURL() {
             $('.tt-title-alert').css("visibility","visible");
         }
 
-        // Stretches Video Player container.
-        $('#main.ytd-watch, #top.ytd-watch').css("max-width","max-content");
-
         // Turn off Trending page link.
         $('a#endpoint').each(function(){
             if($(this).attr("title").toLowerCase() == "trending"){
@@ -95,8 +92,19 @@ function testURL() {
             $('#related').html('<div class="tt-alert-box"><p>Distracting Content Disabled</p></div>');
             $('#related').show();
         } else {
-            $("#columns").css("display","block");
-            $('#related').hide();
+            patt = new RegExp("watching now");
+
+            if(patt.test($('#info-text').text().toLowerCase())){
+                $("#columns").css("display","flex");
+                $('#related').html('<div class="tt-alert-box"><p>Distracting Content Disabled</p></div>');
+                $('#related').show();
+            } else {
+                $("#columns").css("display", "block");
+                $('#related').hide();
+
+                // Stretches Video Player container.
+                $('#main.ytd-watch, #top.ytd-watch').css("max-width", "max-content");
+            }
         }
 
         // Switch off unrelated videos after current play has ended. Checks for keywords matching the title.
