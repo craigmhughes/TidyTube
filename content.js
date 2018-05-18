@@ -1,41 +1,91 @@
 
 // Initialize localStorage variables.
-if(localStorage.getItem("refCount") === null){
-    localStorage.setItem("refCount", 0);
-}
-
-if(localStorage.getItem("initUrl") === null){
-    localStorage.setItem("initUrl", window.location.href);
-}
 
 if(localStorage.getItem("TidyTubeEnabled") === null){
     localStorage.setItem("TidyTubeEnabled", "true");
 }
 
+// Do not allow trending page.
+if(window.location.href === "https://www.youtube.com/feed/trending"){
+    window.location.replace("https://www.youtube.com");
+}
+
+// Call setup on ready
 $(document).ready(function () {
-    let logoUrl = chrome.extension.getURL('logo-green-02.png');
-    let logoUrl2 = chrome.extension.getURL('logo-gray-02.png');
+    ttSetup();
+    setInterval(function () {
+        mainPageEdit();
+        testURL();
+    }, 1000);
+});
 
+// Logo URLs
+let logoUrl = chrome.extension.getURL('logo-green-02.png');
+let logoUrl2 = chrome.extension.getURL('logo-gray-02.png');
+
+// Sets pre-requisites for functions.
+function ttSetup(){
+
+    // Add toggle button
     $('div#end').prepend("<img class='tt-toggle' title='Toggle TidyTube'/>");
+    $('.tt-toggle').attr("src", logoUrl);
 
-    if(localStorage.getItem("TidyTubeEnabled") === "true"){
-        $('.tt-toggle').attr("src", logoUrl);
-        $('#primary').prepend("<div class='tt-alert-box tt-title-alert'><img id='tt-logo' height='30px' width='auto'/><p>TidyTube is currently blocking possible distracting content.</p></div>");
-        $('#tt-logo').attr("src", logoUrl);
+    if(localStorage.getItem("TidyTubeEnabled") === "true") {
+        // Add alert
+        $('#masthead').append("<div class='tt-alert-box tt-title-alert'><p>Nothing loading?</p></div>");
+        $('ytd-section-list-renderer#primary').css('margin-top', '50px');
+
+        $('.tt-title-alert').hover(function () {
+            $(this).addClass("hovered-title");
+            $(this).find("p").text("Click to reload");
+            $(this).css("width", "+=50");
+        }, function () {
+            $(this).removeClass("hovered-title");
+            $(this).find("p").text("Nothing loading?");
+            $(this).css("width", "auto");
+        });
+
+        $('.tt-title-alert').click(function () {
+            location.reload();
+        });
     } else {
         $('.tt-toggle').attr("src", logoUrl2);
     }
-
-    testURL(window.location.href);
 
     $('.tt-toggle').click(function () {
         storageChange();
         location.reload();
     });
-});
+}
 
-function testURL(winUrl) {
+function testURL() {
+
     if(localStorage.getItem("TidyTubeEnabled") === "true"){
+
+        // Checks if url is that of the home page.
+        if(window.location.href.length > 24){
+            $('.tt-title-alert').css("visibility","hidden");
+        } else {
+            $('.tt-title-alert').css("visibility","visible");
+        }
+
+        // Stretches Video Player container.
+        $('#main.ytd-watch, #top.ytd-watch').css("max-width","max-content");
+
+        // Turn off Trending page link.
+        $('a#endpoint').each(function(){
+            if($(this).attr("title").toLowerCase() == "trending"){
+                $(this).parents(':eq(0)').hide();
+            }
+        });
+
+        // Turn off "More from YouTube"
+        $('#sections h3 #guide-section-title').each(function() {
+            if (this.innerHTML == "More from YouTube") {
+                $(this).parents(':eq(1)').hide();
+            }
+        });
+
         let url = window.location.href;
         let patt = new RegExp("list");
 
@@ -49,38 +99,46 @@ function testURL(winUrl) {
             $('#related').hide();
         }
 
+        // Switch off unrelated videos after current play has ended. Checks for keywords matching the title.
+        let titleKeywords = $('#info-contents .title').text().split(/ +/);
+
+        $('span.ytp-videowall-still-info-title').each(function(){
+            $(this).parents(':eq(3)').hide();
+
+            for (let i = 0; i < titleKeywords.length; i++) {
+                patt = new RegExp(titleKeywords[i].toLowerCase());
+
+                console.log(titleKeywords);
+                console.log(this.innerText.toLowerCase());
+
+                if ( patt.test(this.innerText.toLowerCase()) ) {
+                    $(this).parents(':eq(3)').show();
+                }
+            }
+        });
+
         // Run through function again. on one iteration, sometimes videos still appear.
         // acts as a double check.
         if(localStorage.getItem("refCount") < 1){
-            localStorage.setItem("refCount", localStorage.getItem("refCount") + 1);
-
-            // Prevents reloading if video state has not changed.
-            if (localStorage.getItem("initUrl") === "https://www.youtube.com/" && localStorage.getItem("initUrl") === "http://www.youtube.com/") {
-                location.reload();
-            }
-
-            testURL(window.location.href);
-        }
-
-        if(winUrl !== localStorage.getItem("initUrl")){
-            localStorage.setItem("refCount", 0);
-            localStorage.setItem("initUrl", winUrl);
+            localStorage.setItem("refCount", toString(parseInt(localStorage.getItem("refCount")) + 1));
+            testURL();
         }
 
         mainPageEdit();
     }
 }
 
-// YouTube doesn't refresh when links are clicked. Test url every time user clicks on page instead.
-$('body').click(function(){
-    testURL(window.location.href);
-});
-
 // Used for if user presses go back in history or forward.
 window.onpopstate = function(){
-    testURL(window.location.href);
-    mainPageEdit();
+        testURL();
+        mainPageEdit();
 };
+
+// Force update as YouTube doesn't refresh.
+$('body').click(function(){
+    testURL();
+    mainPageEdit();
+});
 
 // Switch Toggle States
 function storageChange() {
@@ -101,29 +159,40 @@ function storageChange() {
 
 function mainPageEdit(){
     if(localStorage.getItem("TidyTubeEnabled") === "true") {
-        let patt = new RegExp("recommended");
+        if(window.location.href.length <= 24) {
+            let patt = new RegExp("recommended");
 
-        if($('#primary:first-of-type > div#contents > ytd-item-section-renderer').css('display') != 'none') {
-            $('#primary:first-of-type > div#contents > ytd-item-section-renderer').hide();
-        }
+            // if ($('#primary:first-of-type > div#contents > ytd-item-section-renderer').css('display') != 'none') {
+            //     $('#primary:first-of-type > div#contents > ytd-item-section-renderer').hide();
+            // }
 
-        // Hide the parent of any element that includes the word "Recommended"
-        $( "yt-formatted-string#title-annotation" ).each(function() {
-            if(patt.test(this.innerText.toLowerCase())){
-                $(this).parents(':eq(4)').hide();
-            }
 
-            let strArr = ["music","sports","gaming","movies"];
-            for(let i = 0; i < strArr.length; i++){
-                if(this.innerText.toLowerCase() === "by " + strArr[i]){
+
+            // Hide the parent of any element that includes the word "Recommended" and Ads by YouTube.
+            $("yt-formatted-string#title-annotation").each(function () {
+                if (patt.test(this.innerText.toLowerCase())) {
                     $(this).parents(':eq(4)').hide();
                 }
-            }
-        });
 
-        titleScrub("trending");
-        titleScrub("live gaming for you");
-        titleScrub("live recommendations");
+                let strArr = ["music", "sports", "gaming", "movies"];
+                for (let i = 0; i < strArr.length; i++) {
+                    if (this.innerText.toLowerCase() === "by " + strArr[i] || this.innerText.toLowerCase() === "by " + strArr[i] + " - topic" || this.innerText.toLowerCase() === "by youtube " + strArr[i]) {
+                        $(this).parents(':eq(4)').hide();
+                    }
+                }
+            });
+
+            // Check for Recommended Section.
+            $('span#title').each(function(){
+               if(patt.test(this.innerText.toLowerCase())){
+                   $(this).parents(':eq(4)').hide();
+               }
+            });
+
+            titleScrub("trending");
+            titleScrub("live gaming for you");
+            titleScrub("live recommendations");
+        }
     }
 }
 
@@ -137,6 +206,3 @@ function titleScrub(pattPass){
         }
     });
 }
-
-
-setInterval(mainPageEdit, 100);

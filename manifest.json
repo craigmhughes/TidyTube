@@ -12,7 +12,7 @@
       "css": ["hider.css"]
     }
   ],
-  "web_accessible_resources": ["logo-gray-02.png","logo-green-02.png"],
+  "web_accessible_resources": ["logo-gray-02.png","logo-green-02.png","refresh.png"],
   "browser_action": {
     "default_icon": "logo-green-02.png"
   },
