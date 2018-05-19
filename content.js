@@ -16,7 +16,7 @@ $(document).ready(function () {
     setInterval(function () {
         mainPageEdit();
         testURL();
-    }, 1000);
+    }, 100);
 });
 
 // Logo URLs
