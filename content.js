@@ -38,11 +38,9 @@ function ttSetup(){
         $('.tt-title-alert').hover(function () {
             $(this).addClass("hovered-title");
             $(this).find("p").text("Click to reload");
-            $(this).css("width", "+=50");
         }, function () {
             $(this).removeClass("hovered-title");
             $(this).find("p").text("Nothing loading?");
-            $(this).css("width", "auto");
         });
 
         $('.tt-title-alert').click(function () {
