@@ -20,8 +20,8 @@ $(document).ready(function () {
 });
 
 // Logo URLs
-let logoUrl = chrome.extension.getURL('logo-green-02.png');
-let logoUrl2 = chrome.extension.getURL('logo-gray-02.png');
+let logoUrl = chrome.extension.getURL('icons/logo-green-02.png');
+let logoUrl2 = chrome.extension.getURL('icons/logo-gray-02.png');
 
 // Sets pre-requisites for functions.
 function ttSetup(){

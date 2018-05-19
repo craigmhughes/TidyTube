@@ -12,13 +12,13 @@
       "css": ["hider.css"]
     }
   ],
-  "web_accessible_resources": ["logo-gray-02.png","logo-green-02.png","refresh.png"],
+  "web_accessible_resources": ["icons/logo-gray-02.png","icons/logo-green-02.png"],
   "browser_action": {
-    "default_icon": "logo-green-02.png"
+    "default_icon": "icons/logo-green-02.png"
   },
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
