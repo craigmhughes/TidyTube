@@ -116,9 +116,6 @@ function testURL() {
             for (let i = 0; i < titleKeywords.length; i++) {
                 patt = new RegExp(titleKeywords[i].toLowerCase());
 
-                console.log(titleKeywords);
-                console.log(this.innerText.toLowerCase());
-
                 if ( patt.test(this.innerText.toLowerCase()) ) {
                     $(this).parents(':eq(3)').show();
                 }
