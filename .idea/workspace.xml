@@ -29,8 +29,8 @@
       <file leaf-file-name="content.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/content.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="19" lean-forward="true" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+            <state relative-caret-position="731">
+              <caret line="103" column="85" lean-forward="true" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -64,6 +64,7 @@
       <find>isS</find>
       <find>winU</find>
       <find>console</find>
+      <find>spli</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -100,6 +101,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -111,7 +113,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -160,12 +161,13 @@
       <workItem from="1526667194264" duration="16990000" />
       <workItem from="1526688131403" duration="828000" />
       <workItem from="1526689177928" duration="470000" />
-      <workItem from="1526710031930" duration="151000" />
+      <workItem from="1526710031930" duration="1805000" />
+      <workItem from="1526748243965" duration="6933000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107912000" />
+    <option name="totallyTimeSpent" value="116499000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -197,6 +199,27 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hider.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3077">
+          <caret line="181" column="72" selection-start-line="181" selection-start-column="72" selection-end-line="181" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/manifest.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -498,8 +521,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/content.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="19" lean-forward="true" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+        <state relative-caret-position="731">
+          <caret line="103" column="85" lean-forward="true" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="85" />
         </state>
       </provider>
     </entry>

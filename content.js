@@ -68,7 +68,7 @@ function testURL() {
         }
 
         // Turn off Trending page link.
-        $('a#endpoint').each(function(){
+        $('#contentContainer a#endpoint').each(function(){
             if($(this).attr("title").toLowerCase() == "trending"){
                 $(this).parents(':eq(0)').hide();
             }
@@ -83,6 +83,8 @@ function testURL() {
 
         let url = window.location.href;
         let patt = new RegExp("list");
+
+        $('#main.ytd-watch, #top.ytd-watch').css("max-width", "var(--flex854-mode-full-width)");
 
         // Check if url is that of a mix.
         if(patt.test(url)) {
@@ -181,9 +183,9 @@ function mainPageEdit(){
 
             // Check for Recommended Section.
             $('span#title').each(function(){
-               if(patt.test(this.innerText.toLowerCase())){
-                   $(this).parents(':eq(4)').hide();
-               }
+                if(patt.test(this.innerText.toLowerCase())){
+                    $(this).parents(':eq(4)').hide();
+                }
             });
 
             titleScrub("trending");
