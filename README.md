@@ -12,6 +12,7 @@ Examples:
   - Tests the recommended videos at the end of a watched video to see if they are actually related.
   
 Note:
+  
   This only really works if you are subscribed to learning channels.
   
   The site will seem as if it is glitching but this is the extension continuously blocking content. The glitch effect is more of a        demonstration of how much recommended content YouTube actually tries to push.
