@@ -16,6 +16,7 @@
             </div>
         </header>
         <section id="tt-body">
+            <p id="info">Toggling options will reload page - if toggle does not work, refresh youtube.</p>
             <ul>
                 <li class="tt-option">
                     <p>Toggle TidyTube</p>
@@ -49,6 +50,13 @@
         body {
             margin : 0;
             font-weight: 600;
+        }
+
+        p#info {
+            font-size: 0.8em;
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         #tt-main {
@@ -89,6 +97,7 @@
             padding: 0;
             margin: 0;
             width: 100%;
+            border-top: 1px solid #e3e3e3;
         }
 
         .tt-option {
