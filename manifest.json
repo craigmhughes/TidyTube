@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "TidyTube",
   "description": "Turns off the distracting YouTube related section. Prevents you from entering the \"Click, Watch, Click, Watch\" void.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "content_scripts": [
     {
       "matches": [
