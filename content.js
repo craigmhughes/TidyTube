@@ -1,8 +1,14 @@
+let ttJson = {
+    "enabled" : "true",
+    "refcount" : "false",
+    "showLoader" : "true",
+    "darkmode" : "false"
+};
+
 
 // Initialize localStorage variables.
-
-if(localStorage.getItem("TidyTubeEnabled") === null){
-    localStorage.setItem("TidyTubeEnabled", "true");
+if(localStorage.getItem("TidyTube") === null){
+    localStorage.setItem("TidyTube", JSON.stringify(ttJson));
 }
 
 // Do not allow trending page.
@@ -13,6 +19,7 @@ if(window.location.href === "https://www.youtube.com/feed/trending"){
 function ready() {
     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
         runTidyTube();
+
     } else {
         document.addEventListener('DOMContentLoaded', runTidyTube);
     }
@@ -20,6 +27,8 @@ function ready() {
 
 function runTidyTube() {
     // Allow one second wait for loading DOM. this seems to fix async.
+    ttJson = JSON.parse(localStorage.getItem("TidyTube"));
+
     setTimeout(function(){
         ttSetup();
         setInterval(function () {
@@ -29,30 +38,29 @@ function runTidyTube() {
     }, 1000);
 }
 
-// Logo URLs
-let logoUrl = chrome.extension.getURL('icons/logo-green-02.png');
-let logoUrl2 = chrome.extension.getURL('icons/logo-gray-02.png');
+let titleAlert;
 
-let titleAlert, winUrl;
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
+    if(msg.action === 'getlocal'){
+        chrome.runtime.sendMessage(["ttenabled" + ttJson.enabled, "loadenabled" + ttJson.showLoader, "darkmode" + ttJson.darkmode]);
+    } else {
+        ttJson.enabled = msg.action[0];
+        ttJson.showLoader = msg.action[1];;
+        ttJson.darkmode = msg.action[2];
+        storageChange();
+    }
+});
+
+
 
 // Sets pre-requisites for functions.
 function ttSetup(){
+    if(ttJson.showLoader === "true" && ttJson.enabled === "true") {
 
-    // Add toggle button
-    let ttToggle = document.createElement('img');
-    ttToggle.className = "tt-toggle";
-    ttToggle.title = "Toggle TidyTube";
-    ttToggle.src = logoUrl;
-
-    winUrl = window.location.href;
-
-    document.getElementById('end').prepend(ttToggle);
-
-    if(localStorage.getItem("TidyTubeEnabled") === "true") {
         // Add alert
         let alertBox = document.createElement('div');
         alertBox.className = "tt-alert-box tt-title-alert";
-        alertBox.id = "tt-alert"
+        alertBox.id = "tt-alert";
         alertBox.innerHTML = `<p>Nothing loading?</p>`;
 
         document.getElementById('masthead').appendChild(alertBox);
@@ -60,13 +68,16 @@ function ttSetup(){
 
         titleAlert = document.getElementById('tt-alert');
 
+        if(ttJson.darkmode === "true")
+            titleAlert.className += " dark";
+
         titleAlert.addEventListener("mouseover", function(){
             this.className += " hovered-title";
             this.childNodes[0].innerText = "Click to Reload";
         });
 
         titleAlert.addEventListener("mouseleave", function(){
-            this.className = "tt-alert-box tt-title-alert";
+            this.className = ttJson.darkmode === "true" ? "tt-alert-box tt-title-alert dark" : "tt-alert-box tt-title-alert";
             this.childNodes[0].innerText = "Nothing loading?";
         });
 
@@ -74,25 +85,15 @@ function ttSetup(){
             location.reload();
         });
 
-    } else {
-        ttToggle.src = logoUrl2;
     }
-
-    ttToggle.addEventListener("click", function(){
-        storageChange();
-        location.reload();
-    });
 }
 
 function testURL() {
 
-    if(localStorage.getItem("TidyTubeEnabled") === "true"){
-
+    if(ttJson.enabled === "true"){
         // Checks if url is that of the home page.
-        if(window.location.href.length > 24){
-            titleAlert.style.visibility = "hidden";
-        } else {
-            titleAlert.style.visibility = "visible";
+        if(ttJson.showLoader === "true") {
+            titleAlert.style.visibility = window.location.href.length > 24 ? "hidden" : "visible";
         }
 
         try{
@@ -179,8 +180,9 @@ function testURL() {
 
     // Run through function again. on one iteration, sometimes videos still appear.
     // acts as a double check.
-    if(localStorage.getItem("refCount") < 1){
-        localStorage.setItem("refCount", toString(parseInt(localStorage.getItem("refCount")) + 1));
+    if(ttJson.refcount === "false"){
+        ttJson.refcount = "true";
+        storageChange();
         testURL();
     }
 
@@ -201,23 +203,13 @@ document.getElementsByTagName("body")[0].addEventListener("click", function(){
 
 // Switch Toggle States
 function storageChange() {
-    switch (localStorage.getItem("TidyTubeEnabled")) {
-        case("true") :
-            localStorage.setItem("TidyTubeEnabled", "false");
-            break;
-        case("false") :
-            localStorage.setItem("TidyTubeEnabled", "true");
-            break;
-        default :
-            localStorage.setItem("TidyTubeEnabled", null);
-            break;
-    }
-
+    localStorage.setItem("TidyTube", JSON.stringify(ttJson));
     location.reload();
 }
 
 function mainPageEdit(){
-    if(localStorage.getItem("TidyTubeEnabled") === "true") {
+
+    if(ttJson.enabled === "true") {
         if(window.location.href.length <= 24) {
             let patt = new RegExp("recommended");
 

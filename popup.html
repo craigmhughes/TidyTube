@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="hider.css"/>
+    <script src="background.js" defer></script>
+</head>
+<body>
+    <!--<button id="enable">Enable/Disable</button>-->
+    <main id="tt-main">
+        <header>
+            <div id="header">
+                <img src="icons/icon128.png" id="tt-logo"/>
+                <h1>TidyTube</h1>
+            </div>
+        </header>
+        <section id="tt-body">
+            <ul>
+                <li class="tt-option">
+                    <p>Toggle TidyTube</p>
+                    <label class="switch" style="right: -60px">
+                        <input class="switcher" type="checkbox" id="enabler">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+                <li class="tt-option">
+                    <p>"Nothing Loading" button</p>
+                    <label class="switch" style="right: -5px">
+                        <input class="switcher" type="checkbox" id="loadToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+                <li class="tt-option">
+                    <p>Dark Theme</p>
+                    <label class="switch" style="right: -82.5px">
+                        <input class="switcher" type="checkbox" id="darkToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+            </ul>
+        </section>
+        <footer>
+            <p>Created by <a href="#" id="author">Craig Hughes</a></p>
+        </footer>
+    </main>
+
+    <style>
+        body {
+            margin : 0;
+            font-weight: 600;
+        }
+
+        #tt-main {
+            width: 250px;
+        }
+
+        #header {
+            background: #222;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        #header > * {
+            display: inline-flex;
+        }
+
+        #header > h1 {
+            color: #2db928;
+            text-transform: lowercase;
+            font-style: italic;
+            margin: 0;
+        }
+
+        #tt-logo {
+            height: 20px;
+            width: auto;
+            margin-right: 10px;
+
+        }
+
+        #tt-body {
+            padding: 10px 20px;
+
+        }
+
+        #tt-body > ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .tt-option {
+            display: inline-flex;
+            border-bottom: 1px solid #e3e3e3;
+            width: 100%;
+        }
+
+        .tt-option > p {
+            padding: 5px 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        a {
+            color: #2db928;
+            text-decoration: none;
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 33px;
+            height: 20px;
+            top: 15px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2db928;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2db928;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(13px);
+            -ms-transform: translateX(13px);
+            transform: translateX(13px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 20px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        #cancelOverlay {
+            position: relative;
+            width: 100%;
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</body>
+</html>

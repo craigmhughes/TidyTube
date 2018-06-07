@@ -39,10 +39,15 @@
     height: 58px;
     position: fixed;
     z-index: 1;
-    margin-left: -50px;
+    margin-left: -52px;
     margin-top: -10px;
     transform:  skew(30deg, 0deg);
     transition-duration: 0.6s;
+}
+
+.tt-title-alert.dark, .tt-title-alert.dark::before {
+    background: #222;
+    color: #fff;
 }
 
 .tt-title-alert > p {
@@ -62,12 +67,12 @@
 }
 
 .hovered-title {
-    background: #30ba2b;
-    color: #fff;
+    background: #30ba2b!important;
+    color: #fff!important;
     border: none;
     box-shadow: 4px 2px 10px rgba(0,0,0,0.2);
 }
 
 .hovered-title::before {
-    background: #30ba2b;
+background: #30ba2b!important;
 }
