@@ -122,20 +122,25 @@ function testURL() {
 
         if(url.length > 24) {
             if (patt.test(url)) {
-                document.getElementById("related").closest("#secondary").style.display = "block";
-
-                document.getElementById("related").innerHTML = `
-                <div class="tt-alert-box"><p>Distracting Content Disabled</p></div>`;
-            } else {
-                patt = new RegExp("watching now");
-
-                if (patt.test(document.getElementById("info-text").innerText.toLowerCase())) {
+                if (document.getElementById("related").closest("#secondary") !== null) {
                     document.getElementById("related").closest("#secondary").style.display = "block";
 
                     document.getElementById("related").innerHTML = `
+                <div class="tt-alert-box"><p>Distracting Content Disabled</p></div>`;
+                }
+            } else {
+                patt = new RegExp("watching now");
+
+                if(document.getElementById("info-text") !== null) {
+                    if (patt.test(document.getElementById("info-text").innerText.toLowerCase())) {
+                        document.getElementById("related").closest("#secondary").style.display = "block";
+
+                        document.getElementById("related").innerHTML = `
                     <div class="tt-alert-box"><p>Distracting Content Disabled</p></div>`;
-                } else {
-                    document.getElementById("related").closest("#secondary").style.display = "none";
+                    } else {
+                        if (document.getElementById("related").closest("#secondary") !== null)
+                            document.getElementById("related").closest("#secondary").style.display = "none";
+                    }
                 }
             }
 
