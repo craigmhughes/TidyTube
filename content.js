@@ -130,16 +130,6 @@ function testURL() {
             if(document.getElementById("primary") !== null)
                 document.getElementById("primary").style.minWidth = "100%";
 
-
-            // if (patt.test(url))) {
-            //     patt = new RegExp("watching now");
-            //
-            //     if(document.getElementById("info-text") !== null && !(patt.test(document.getElementById("info-text").innerText.toLowerCase())) &&
-            //         document.getElementById("top") !== null) {
-            //                 document.getElementById("top").style.maxWidth = "max-content";
-            //     }
-            // }
-
             if (patt.test(url)) {
                 if(document.getElementById("primary") !== null)
                     document.getElementById("primary").style.minWidth = "";
