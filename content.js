@@ -64,7 +64,8 @@ function ttSetup(){
         alertBox.innerHTML = `<p>Nothing loading?</p>`;
 
         document.getElementById('masthead').appendChild(alertBox);
-        document.getElementById('primary').style.marginTop = window.location.href.length <= 24 ? "50px" : "0px";
+        if(document.getElementById('primary') !== null)
+            document.getElementById('primary').style.marginTop = window.location.href.length <= 24 ? "50px" : "0px";
 
         titleAlert = document.getElementById('tt-alert');
 
