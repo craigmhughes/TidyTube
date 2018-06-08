@@ -63,28 +63,30 @@ function ttSetup(){
         alertBox.id = "tt-alert";
         alertBox.innerHTML = `<p>Nothing loading?</p>`;
 
-        document.getElementById('masthead').appendChild(alertBox);
-        if(document.getElementById('primary') !== null)
+        if(document.getElementById('primary') !== null) {
+            document.getElementById('masthead').appendChild(alertBox);
             document.getElementById('primary').style.marginTop = window.location.href.length <= 24 ? "50px" : "0px";
 
-        titleAlert = document.getElementById('tt-alert');
 
-        if(ttJson.darkmode === "true")
-            titleAlert.className += " dark";
+            titleAlert = document.getElementById('tt-alert');
 
-        titleAlert.addEventListener("mouseover", function(){
-            this.className += " hovered-title";
-            this.childNodes[0].innerText = "Click to Reload";
-        });
+            if(ttJson.darkmode === "true")
+                titleAlert.className += " dark";
 
-        titleAlert.addEventListener("mouseleave", function(){
-            this.className = ttJson.darkmode === "true" ? "tt-alert-box tt-title-alert dark" : "tt-alert-box tt-title-alert";
-            this.childNodes[0].innerText = "Nothing loading?";
-        });
+            titleAlert.addEventListener("mouseover", function(){
+                this.className += " hovered-title";
+                this.childNodes[0].innerText = "Click to Reload";
+            });
 
-        titleAlert.addEventListener("click", function(){
-            location.reload();
-        });
+            titleAlert.addEventListener("mouseleave", function(){
+                this.className = ttJson.darkmode === "true" ? "tt-alert-box tt-title-alert dark" : "tt-alert-box tt-title-alert";
+                this.childNodes[0].innerText = "Nothing loading?";
+            });
+
+            titleAlert.addEventListener("click", function(){
+                location.reload();
+            });
+        }
 
     }
 }
@@ -93,7 +95,7 @@ function testURL() {
 
     if(ttJson.enabled === "true"){
         // Checks if url is that of the home page.
-        if(ttJson.showLoader === "true") {
+        if(ttJson.showLoader === "true" && document.getElementById('primary') !== null) {
             titleAlert.style.visibility = window.location.href.length > 24 ? "hidden" : "visible";
         }
 
@@ -122,33 +124,44 @@ function testURL() {
         let patt = new RegExp("list");
 
         if(url.length > 24) {
-            if (patt.test(url)) {
-                if (document.getElementById("related").closest("#secondary") !== null) {
-                    document.getElementById("related").closest("#secondary").style.display = "block";
+            if(document.getElementById("top") !== null)
+                document.getElementById("top").style.maxWidth = "var(--flex854-mode-full-width)";
 
-                    document.getElementById("related").innerHTML = `
-                <div class="tt-alert-box"><p>Distracting Content Disabled</p></div>`;
-                }
+            if(document.getElementById("primary") !== null)
+                document.getElementById("primary").style.minWidth = "100%";
+
+
+            // if (patt.test(url))) {
+            //     patt = new RegExp("watching now");
+            //
+            //     if(document.getElementById("info-text") !== null && !(patt.test(document.getElementById("info-text").innerText.toLowerCase())) &&
+            //         document.getElementById("top") !== null) {
+            //                 document.getElementById("top").style.maxWidth = "max-content";
+            //     }
+            // }
+
+            if (patt.test(url)) {
+                if(document.getElementById("primary") !== null)
+                    document.getElementById("primary").style.minWidth = "";
             } else {
                 patt = new RegExp("watching now");
 
                 if(document.getElementById("info-text") !== null) {
                     if (patt.test(document.getElementById("info-text").innerText.toLowerCase())) {
-                        document.getElementById("related").closest("#secondary").style.display = "block";
-
-                        document.getElementById("related").innerHTML = `
-                    <div class="tt-alert-box"><p>Distracting Content Disabled</p></div>`;
-                    } else {
-                        if (document.getElementById("related").closest("#secondary") !== null)
-                            document.getElementById("related").closest("#secondary").style.display = "none";
+                        if(document.getElementById("primary") !== null)
+                            document.getElementById("primary").style.minWidth = "";
                     }
                 }
             }
 
+            if (document.getElementById("related") !== null)
+                document.getElementById("related").style.display = "none";
+
 
             // Switch off unrelated videos after current play has ended. Checks for keywords matching the title.
             // SUPER HACKY! -- Cannot find closest title class for some reason. childNodes must be used probably because you suck at this.
-            let titleEl = document.getElementById("info-contents").childNodes[0].childNodes[0].childNodes[2];
+
+            let titleEl = document.getElementById("info-contents") === null ? undefined : document.getElementById("info-contents").childNodes[0].childNodes[0].childNodes[2];
             if(titleEl !== undefined) {
                 let titleKeywords = titleEl.innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
 
