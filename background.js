@@ -5,7 +5,7 @@ let loadToggle = document.getElementById("loadToggle");
 let darkToggle = document.getElementById("darkToggle");
 
 document.getElementById("author").addEventListener("click", function(){
-    let newURL = "https://www.linkedin.com/in/craig-m-hughes/";
+    let newURL = "https://github.com/craigmhughes/";
     chrome.tabs.create({ url: newURL });
 });
 
