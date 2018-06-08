@@ -148,38 +148,41 @@ function testURL() {
 
             // Switch off unrelated videos after current play has ended. Checks for keywords matching the title.
             // SUPER HACKY! -- Cannot find closest title class for some reason. childNodes must be used probably because you suck at this.
-            let titleKeywords = document.getElementById("info-contents").childNodes[0].childNodes[0].childNodes[2].innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
+            let titleEl = document.getElementById("info-contents").childNodes[0].childNodes[0].childNodes[2];
+            if(titleEl !== undefined) {
+                let titleKeywords = titleEl.innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
 
-            // Ignore keywords such as common connectives or hyphen.
-            let ignoredKeywords = ["-", "to", "a", "for", "and", "the", "i", "in", "from", "about"];
-            let endVids = document.getElementsByClassName("ytp-videowall-still-info-title");
+                // Ignore keywords such as common connectives or hyphen.
+                let ignoredKeywords = ["-", "to", "a", "for", "and", "the", "i", "in", "from", "about"];
+                let endVids = document.getElementsByClassName("ytp-videowall-still-info-title");
 
-            for (let i = 0; i < endVids.length; i++) {
-                let endVidKeywords = endVids[i].innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
-                let hasKeyword = false;
+                for (let i = 0; i < endVids.length; i++) {
+                    let endVidKeywords = endVids[i].innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
+                    let hasKeyword = false;
 
-                // Remove ignored keywords
-                for (let j = 0; j < endVidKeywords.length; j++) {
-                    for (let k = 0; k < ignoredKeywords.length; k++) {
-                        if (endVidKeywords[j] === ignoredKeywords[k]) {
-                            endVidKeywords[j] = "";
-                        }
-                    }
-                }
-
-                loop1:
-                    for (let k = 0; k < endVidKeywords.length; k++) {
-                        for (let j = 0; j < titleKeywords.length; j++) {
-                            if (titleKeywords[j] === endVidKeywords[k]) {
-                                // title contains keyword and loop is no longer needed -- break to loop1 label
-                                hasKeyword = true;
-                                break loop1;
+                    // Remove ignored keywords
+                    for (let j = 0; j < endVidKeywords.length; j++) {
+                        for (let k = 0; k < ignoredKeywords.length; k++) {
+                            if (endVidKeywords[j] === ignoredKeywords[k]) {
+                                endVidKeywords[j] = "";
                             }
                         }
                     }
 
-                // Hides video based on related-ness <-- not a word.
-                endVids[i].closest(".ytp-suggestion-set").style.display = hasKeyword ? "block" : "none";
+                    loop1:
+                        for (let k = 0; k < endVidKeywords.length; k++) {
+                            for (let j = 0; j < titleKeywords.length; j++) {
+                                if (titleKeywords[j] === endVidKeywords[k]) {
+                                    // title contains keyword and loop is no longer needed -- break to loop1 label
+                                    hasKeyword = true;
+                                    break loop1;
+                                }
+                            }
+                        }
+
+                    // Hides video based on related-ness <-- not a word.
+                    endVids[i].closest(".ytp-suggestion-set").style.display = hasKeyword ? "block" : "none";
+                }
             }
         }
     }
