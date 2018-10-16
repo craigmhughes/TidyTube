@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>TidyTube</title>
     <link rel="stylesheet" href="hider.css"/>
     <script src="background.js" defer></script>
 </head>
 <body>
-    <!--<button id="enable">Enable/Disable</button>-->
     <main id="tt-main">
         <header>
             <div id="header">
-                <img src="icons/icon128.png" id="tt-logo"/>
+                <img src="icons/logo-green-02.png" id="tt-logo"/>
                 <h1>TidyTube</h1>
             </div>
         </header>
@@ -20,22 +19,8 @@
             <ul>
                 <li class="tt-option">
                     <p>Toggle TidyTube</p>
-                    <label class="switch" style="right: -60px">
+                    <label class="switch">
                         <input class="switcher" type="checkbox" id="enabler">
-                        <span class="slider round"></span>
-                    </label>
-                </li>
-                <li class="tt-option">
-                    <p>"Nothing Loading" button</p>
-                    <label class="switch" style="right: -5px">
-                        <input class="switcher" type="checkbox" id="loadToggle">
-                        <span class="slider round"></span>
-                    </label>
-                </li>
-                <li class="tt-option">
-                    <p>Dark Theme</p>
-                    <label class="switch" style="right: -82.5px">
-                        <input class="switcher" type="checkbox" id="darkToggle">
                         <span class="slider round"></span>
                     </label>
                 </li>
@@ -47,26 +32,30 @@
     </main>
 
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:700i');
+
         body {
             margin : 0;
+            padding: 0 20px;
             font-weight: 600;
+            font-family: 'Montserrat', 'Open Sans', sans-serif;
+            border-radius: 40px;
         }
 
         p#info {
             font-size: 0.8em;
             text-align: center;
             margin-bottom: 20px;
-            font-style: italic;
+            color: grey;
         }
 
         #tt-main {
-            width: 250px;
+            width: 210px;
         }
 
         #header {
-            background: #222;
             text-align: center;
-            padding: 20px 0;
+            padding: 20px 0 10px 0;
         }
 
         #header > * {
@@ -74,10 +63,12 @@
         }
 
         #header > h1 {
-            color: #2db928;
+            color: #23b417;
             text-transform: lowercase;
             font-style: italic;
             margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            letter-spacing: -2px;
         }
 
         #tt-logo {
@@ -101,22 +92,27 @@
         }
 
         .tt-option {
-            display: inline-flex;
+            display: inline-grid;
             border-bottom: 1px solid #e3e3e3;
             width: 100%;
+
+            grid-template-columns: 7fr 3fr;
         }
 
         .tt-option > p {
             padding: 5px 10px;
+            font-size: 0.8em;
         }
 
         footer {
             text-align: center;
             padding-bottom: 10px;
+            font-size: 0.8em;
+            color: lightgray
         }
 
         a {
-            color: #2db928;
+          color: gray;
             text-decoration: none;
         }
 
@@ -124,9 +120,10 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 33px;
+            width: 28px;
             height: 20px;
-            top: 15px;
+            top: 10px;
+            right: -25px;
         }
 
         /* Hide default HTML checkbox */
@@ -136,10 +133,11 @@
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
+            top: 5px;
             left: 0;
             right: 0;
             bottom: 0;
+            height: 12px;
             background-color: #ccc;
             -webkit-transition: .4s;
             transition: .4s;
@@ -150,8 +148,9 @@
             content: "";
             height: 16px;
             width: 16px;
-            left: 2px;
-            bottom: 2px;
+            left: -1px;
+            top: -2px;
+            box-shadow: -0.5px 1px 2.5px rgba(0,0,0,0.4);
             background-color: white;
             -webkit-transition: .4s;
             transition: .4s;
@@ -166,9 +165,9 @@
         }
 
         input:checked + .slider:before {
-            -webkit-transform: translateX(13px);
-            -ms-transform: translateX(13px);
-            transform: translateX(13px);
+            background: #218c1e;
+            -webkit-transform: translateX(15px);
+            transform: translateX(15px);
         }
 
         /* Rounded sliders */
