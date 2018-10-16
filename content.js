@@ -194,7 +194,7 @@ function pageEdit(){
             // Check and possibly delete elements containing ignored TITLE string.
             for(let i = 0; i < listTitles.length; i++){
               if(listTitles[i].getAttribute("id") === "title"){
-                let ignoredTitles = ["recommended","trending","live gaming for you","live recommendations", "gaming for you"];
+                let ignoredTitles = ["recommended","topic","trending","live gaming for you","live recommendations", "gaming for you"];
 
                 for(let j = 0; j < ignoredTitles.length; j++) {
                     if (listTitles[i].innerText.toLowerCase().includes(ignoredTitles[j])) {
@@ -213,7 +213,7 @@ function pageEdit(){
                         sectionSubtitles[i].closest("#dismissable").style.display = "none";
                     }
 
-                    let strArr = ["music", "sports", "gaming", "movies"];
+                    let strArr = ["music", "sports", "gaming", "movies", "topic"];
                     let currentTitle = sectionSubtitles[i].innerText.toLowerCase();
 
                     for (let j = 0; j < strArr.length; j++) {
