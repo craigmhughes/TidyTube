@@ -4,8 +4,8 @@ try {
 
   // Redirect to GitHub page
   document.getElementById("author").addEventListener("click", function(){
-      let newURL = "https://github.com/craigmhughes/";
-      chrome.tabs.create({ url: newURL });
+      let newURL = "https://github.com/craigmhughes/tidytube/";
+      browser.tabs.create({ url: newURL });
   });
 
   setInterval(function(){
@@ -13,9 +13,9 @@ try {
   }, 5000);
 
   function queryStates(){
-      chrome.tabs.query({}, function(tabs){
+      browser.tabs.query({}, function(tabs){
           for (let i=0; i<tabs.length; ++i) {
-              chrome.tabs.sendMessage(tabs[i].id, {action: "getlocal"});
+              browser.tabs.sendMessage(tabs[i].id, {action: "getlocal"});
           }
       });
   }
@@ -30,15 +30,16 @@ try {
   }
 
   function updateStates(){
-      chrome.tabs.query({}, function(tabs){
+      browser.tabs.query({}, function(tabs){
           for (let i=0; i<tabs.length; ++i) {
-              chrome.tabs.sendMessage(tabs[i].id, {action: [enabler.checked.toString()]});
+              browser.tabs.sendMessage(tabs[i].id, {action: [enabler.checked.toString()]});
           }
       });
   }
 
-  chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  browser.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
       enabler.checked = msg[0] === "ttenabledtrue";
+      document.getElementById("enableText").innerText = msg[0] === "ttenabledtrue" ? "Extension Enabled" : "Extension Disabled";
   });
 
   queryStates();
