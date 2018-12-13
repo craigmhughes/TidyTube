@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "background": {
     "scripts": [ "background.js" ]
   },
@@ -23,6 +24,8 @@
   "version": "1.2.0"
 }
 =======
+=======
+>>>>>>> parent of 68dd4bc... Added Firefox Support
    "background": {
       "scripts": [ "background.js" ]
    },
@@ -45,6 +48,11 @@
    "manifest_version": 2,
    "name": "TidyTube",
    "update_url": "https://clients2.google.com/service/update2/crx",
+<<<<<<< HEAD
    "version": "1.1.7"
 }
 >>>>>>> parent of 1a1a74f... Updated Version Number
+=======
+   "version": "1.2.1"
+}
+>>>>>>> parent of 68dd4bc... Added Firefox Support

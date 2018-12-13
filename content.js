@@ -26,21 +26,14 @@ var cssAdd = document.createElement("style");
   */
 function ready() {
   ttJson = JSON.parse(localStorage.getItem("TidyTube"));
-  console.log("Hey there");
 
   if(ttJson.enabled === "true") {
     document.getElementsByTagName("body")[0].appendChild(cssAdd);
-      cssAdd.innerHTML += `#related{display:none;}
-      .html5-video-player .video-stream {position:inherit;max-height: 1000px;}
-      #player-theater-container.ytd-watch-flexy{max-height:630px!important;}
-      .html5-main-video {height:100%!important;width:100%!important;max-width:1125px;left:0!important;top:0!important;margin: auto;}
-      .ytp-endscreen-content,.ytp-endscreen-previous,.ytp-endscreen-next {display: none;}
-      .ytd-player#container {background:#000;}
-      .ytd-shelf-renderer {transition-duration: 1s; opacity: 0; pointer-events: none;}
-      a[href="/feed/trending"]{display:none!important}
-      #contents.ytd-section-list-renderer > *.ytd-section-list-renderer:not(:last-child):not(ytd-page-introduction-renderer) {border-bottom: none!important;}
-      #tt-alert{margin:30px 0 15px 0;color:rgba(125,125,125,1);font-size:0.8em;border-bottom: 1px solid rgba(125,125,125,0.5);}
-      #tt-alert > h1 > span {color:rgba(125,125,125,0.75);font-weight: 200;margin-left:10px;}
+    cssAdd.innerHTML += `#related{display:none;}
+    .html5-main-video {left:0!important; top:0!important;}
+    .ytd-shelf-renderer {transition-duration: 1s; opacity: 0; pointer-events: none;}
+    a[href="/feed/trending"]{display:none!important}
+    #contents.ytd-section-list-renderer > *.ytd-section-list-renderer:not(:last-child):not(ytd-page-introduction-renderer) {border-bottom: none!important;}
     `;
 
     if(window.location.href > 24){
@@ -51,7 +44,7 @@ function ready() {
       cssAdd.innerHTML += `
       .ytd-watch-flexy#primary {position: absolute;width: 90%; transition-duration: 1s;}
       video.html5-main-video {width: -webkit-fill-available!important;height: -webkit-fill-available!important;}
-      .ytp-browser-bottom {width: 97%!important;}`;
+      .ytp-chrome-bottom {width: 97%!important;}`;
     }
 
   }
@@ -82,9 +75,9 @@ function runTidyTube() {
 /**
   * Gets info from toggle controller. (background.js)
   */
-browser.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     if(msg.action === 'getlocal'){
-        browser.runtime.sendMessage(["ttenabled" + ttJson.enabled]);
+        chrome.runtime.sendMessage(["ttenabled" + ttJson.enabled]);
     } else {
         ttJson.enabled = msg.action[0];
         storageChange();
@@ -96,6 +89,58 @@ browser.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   * Also checks if user has changed toggle and reloads page if so.
   */
 function testURL() {
+
+    if(ttJson.enabled === "true"){
+
+        let url = window.location.href;
+        let patt = new RegExp("list");
+
+        if(url.length > 24) {
+            // Switch off unrelated videos after current play has ended. Checks for keywords matching the title.
+            // SUPER HACKY! -- Cannot find closest title class for some reason. childNodes must be used probably because you suck at this.
+            try{
+              let titleEl = document.getElementById("info-contents") === null ? undefined : document.getElementById("info-contents").childNodes[0].childNodes[0].childNodes[2];
+              if(titleEl !== undefined) {
+                let titleKeywords = titleEl.innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
+
+                // Ignore keywords such as common connectives or hyphen.
+                let ignoredKeywords = ["-", "to", "a", "for", "and", "the", "i", "in", "from", "about"];
+                let endVids = document.getElementsByClassName("ytp-videowall-still-info-title");
+
+                for (let i = 0; i < endVids.length; i++) {
+                    let endVidKeywords = endVids[i].innerText.replace(/\(\)/g, " ").toLowerCase().split(/\s+/);
+                    let hasKeyword = false;
+
+                    // Remove ignored keywords
+                    for (let j = 0; j < endVidKeywords.length; j++) {
+                        for (let k = 0; k < ignoredKeywords.length; k++) {
+                            if (endVidKeywords[j] === ignoredKeywords[k]) {
+                                endVidKeywords[j] = "";
+                            }
+                        }
+                    }
+
+                    loop1:
+                        for (let k = 0; k < endVidKeywords.length; k++) {
+                            for (let j = 0; j < titleKeywords.length; j++) {
+                                if (titleKeywords[j] === endVidKeywords[k]) {
+                                    // title contains keyword and loop is no longer needed -- break to loop1 label
+                                    hasKeyword = true;
+                                    break loop1;
+                                }
+                            }
+                        }
+
+                    // Hides video based on related-ness <-- not a word.
+                    endVids[i].closest(".ytp-suggestion-set").style.display = hasKeyword ? "block" : "none";
+                }
+              }
+            } catch (TypeError) {
+              // Missing element to parse.
+            }
+        }
+    }
+
     // Run through function again. on one iteration, sometimes videos still appear.
     // acts as a double check.
     if(ttJson.refcount === "false"){
@@ -140,23 +185,6 @@ function pageEdit(){
 
     if(ttJson.enabled === "true") {
         if(window.location.href.length <= 24) {
-
-            let page = document.getElementsByClassName("ytd-section-list-renderer");
-            for(let i = 0; i < page.length; i++){
-              if(page[i].id === "contents" && !page[i].parentNode.querySelector("#tt-alert")){
-                var ttText = document.createElement('div');
-                ttText.id = "tt-alert";
-                ttText.innerHTML = "<h1>TidyTube is enabled <span>Click the icon to toggle</span></h1>";
-                page[i].style.marginTop = "0";
-                ttText.style.marginLeft = page[i].style.marginLeft;
-                page[i].parentNode.insertBefore(ttText, page[i]);
-              }
-            }
-
-            try{
-              document.getElementById("tt-alert").style.display = "block";
-            } catch (TypeError){}
-
             let patt = new RegExp("recommended");
 
             let sectionSubtitles = document.getElementsByTagName("yt-formatted-string");
@@ -185,7 +213,7 @@ function pageEdit(){
                         sectionSubtitles[i].closest("#dismissable").style.display = "none";
                     }
 
-                    let strArr = ["music", "sports", "gaming", "movies", "topic", "films"];
+                    let strArr = ["music", "sports", "gaming", "movies", "topic"];
                     let currentTitle = sectionSubtitles[i].innerText.toLowerCase();
 
                     for (let j = 0; j < strArr.length; j++) {
@@ -208,28 +236,19 @@ function pageEdit(){
 
           showContent();
 
-          try{
-            document.getElementById("tt-alert").style.display = "none";
-          } catch (TypeError){}
-
           try {
-            let flexies = document.getElementsByClassName("ytd-watch-flexy");
+
+            let cssAdd2 = document.createElement("style");
+
             if( (document.getElementsByTagName("yt-view-count-renderer")[0].innerText.includes("watching now")
                 && window.location.href.includes("watch")) || window.location.href.includes("list")){
-                  for(let i = 0; i < flexies.length; i++){
-                    if(flexies[i].id == "primary") {
-                      flexies[i].style.position = "static";
-                    }
-                  }
+
+                  cssAdd2.innerHTML = ".ytd-watch-flexy#primary {position: static;}";
+                  document.getElementsByTagName("body")[0].appendChild(cssAdd2);
             } else {
-              for (let item in document.getElementsByClassName("ytd-watch-flexy")){
-                for(let i = 0; i < flexies.length; i++){
-                  if(flexies[i].id == "primary") {
-                    flexies[i].style.position = "absolute";
-                    flexies[i].style.width = "90%";
-                  }
-                }
-              }
+
+              cssAdd2.innerHTML = ".ytd-watch-flexy#primary {position: absolute;width: 90%;}";
+              document.getElementsByTagName("body")[0].appendChild(cssAdd2);
             }
           }
           catch (TypeError){}
