@@ -1,4 +1,4 @@
-# TidyTube - No longer Working -- might update if time is available.
+# TidyTube (Deprecated)
 
 Tidies up distracting content YouTube tries so very hard to push on to viewers.
 I made this initially to help myself learn more about programming while on the site. I would often click off the subject I am viewing and be trapped in a loop of Clicking and watching content that is not helping me learn.
